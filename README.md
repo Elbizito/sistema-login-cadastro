@@ -1,32 +1,32 @@
 # 🚀 Sistema de Login e Cadastro
 
-Um sistema completo de autenticação com interface moderna, tema escuro e backend robusto utilizando Node.js e MySQL.
+📍 ACESSE O FORMULARIO AQUI: https://sistema-login-cadastro-production.up.railway.app/index.html
 
 ## 📋 Índice
 
 - [Sobre o Projeto](#sobre-o-projeto)
 - [Funcionalidades](#funcionalidades)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Arquitetura do Sistema](#arquitetura-do-sistema)
 - [Pré-requisitos](#pré-requisitos)
 - [Instalação](#instalação)
-- [Configuração do Banco de Dados](#configuração-do-banco-de-dados)
 - [Como Usar](#como-usar)
 - [Estrutura do Projeto](#estrutura-do-projeto)
-- [API Endpoints](#api-endpoints)
 - [Screenshots](#screenshots)
 - [Contribuição](#contribuição)
 - [Licença](#licença)
 
 ## 🎯 Sobre o Projeto
 
-Este projeto é um sistema completo de autenticação que permite aos usuários se cadastrarem e fazerem login de forma segura. Desenvolvido com foco na experiência do usuário, conta com design responsivo e modo escuro.
+Este projeto é um sistema de autenticação frontend que permite aos usuários se cadastrarem e fazerem login utilizando localStorage para persistência de dados. Desenvolvido com foco na experiência do usuário, conta com design responsivo e modo escuro.
 
 ### ✨ Destaques
 - 🌙 **Tema Escuro/Claro** - Alternância suave entre temas
 - 📱 **Design Responsivo** - Funciona perfeitamente em dispositivos móveis
-- 🔒 **Validação Robusta** - Validações tanto no frontend quanto no backend
+- 🔒 **Validação Robusta** - Validações completas no frontend
 - ⚡ **Interface Moderna** - Design limpo e intuitivo
 - 🛡️ **Segurança** - Prevenção de duplicação de emails
+- 💾 **Armazenamento Local** - Dados persistem no navegador via localStorage
 
 ## 🚀 Funcionalidades
 
@@ -36,6 +36,7 @@ Este projeto é um sistema completo de autenticação que permite aos usuários 
 - [x] Validação de confirmação de senha
 - [x] Verificação de emails duplicados
 - [x] Validação de campos obrigatórios
+- [x] Persistência de dados no localStorage
 
 ### 🎨 Interface do Usuário
 - [x] Tema escuro/claro com toggle
@@ -44,35 +45,80 @@ Este projeto é um sistema completo de autenticação que permite aos usuários 
 - [x] Feedback visual com alerts
 - [x] Formulários estilizados
 
-### 🛠️ Backend
-- [x] API RESTful com Express.js
-- [x] Conexão segura com MySQL
-- [x] Tratamento de erros
-- [x] Validação de dados no servidor
-- [x] Respostas JSON estruturadas
+### 🛠️ Backend (Node.js)
+- [x] Servidor Express.js para servir arquivos estáticos
+- [x] Deploy no Railway
+- [x] Tratamento de rotas
+- [x] Configuração para produção
 
 ## 🛠️ Tecnologias Utilizadas
 
 ### Frontend
 - **HTML5** - Estrutura semântica
 - **CSS3** - Estilização e animações
-- **JavaScript ES6+** - Interatividade e requisições
+- **JavaScript ES6+** - Lógica de autenticação e interatividade
+- **localStorage** - Persistência de dados no navegador
 
 ### Backend
 - **Node.js** - Runtime JavaScript
-- **Express.js** - Framework web
-- **MySQL2** - Driver para MySQL
-- **Body-parser** - Parse de dados HTTP
+- **Express.js** - Servidor web para servir arquivos estáticos
 
-### Banco de Dados
-- **MySQL** - Sistema de gerenciamento de banco de dados
+### Deploy
+- **Railway** - Plataforma de hospedagem
+
+## 🏗️ Arquitetura do Sistema
+
+### 📊 Como os Dados São Gerenciados
+
+Este sistema utiliza uma **arquitetura frontend-first** com armazenamento local:
+
+#### 🖥️ **Frontend (JavaScript + localStorage)**
+- **Cadastro**: Validação e armazenamento de novos usuários no localStorage
+- **Login**: Verificação de credenciais contra dados salvos localmente
+- **Validação**: Verificação de emails duplicados e validação de senhas
+- **Sessão**: Manutenção do estado de login do usuário
+- **Preferências**: Configurações como tema escuro/claro
+
+#### ⚙️ **Backend (Node.js + Express)**
+- **Servidor Estático**: Serve os arquivos HTML, CSS e JS
+- **Roteamento**: Gerencia as rotas da aplicação
+- **Deploy**: Configurado para produção no Railway
+
+#### 🔗 **Fluxo de Dados**
+1. **Cadastro**: Frontend valida → Salva no localStorage
+2. **Login**: Frontend verifica → localStorage
+3. **Sessão**: Mantida no localStorage
+4. **Preferências**: Salvas no localStorage
+
+#### 💾 **Estrutura dos Dados no localStorage**
+```javascript
+// Usuários cadastrados
+localStorage.setItem('users', JSON.stringify([
+  {
+    id: 1,
+    name: "João Silva",
+    email: "joao@email.com",
+    password: "senha123"
+  }
+]));
+
+// Usuário logado
+localStorage.setItem('currentUser', JSON.stringify({
+  name: "João Silva",
+  email: "joao@email.com"
+}));
+
+// Preferências
+localStorage.setItem('theme', 'dark');
+```
+
+> **Nota**: Este sistema é ideal para projetos de demonstração, portfólios e aplicações que não requerem persistência de dados entre diferentes dispositivos. Para aplicações em produção com múltiplos usuários, considere integrar com um banco de dados real.
 
 ## 📋 Pré-requisitos
 
 Antes de começar, certifique-se de ter instalado:
 
 - [Node.js](https://nodejs.org/) (versão 14 ou superior)
-- [MySQL](https://www.mysql.com/) (versão 8.0 ou superior)
 - [Git](https://git-scm.com/)
 
 ## ⚙️ Instalação
@@ -88,49 +134,18 @@ cd sistema-login-cadastro
 npm install
 ```
 
-3. **Configure as variáveis de ambiente**
-```bash
-# Crie um arquivo .env na raiz do projeto
-cp .env.example .env
-```
-
-4. **Edite o arquivo .env com suas configurações**
-```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=admin
-DB_NAME=formulario_db
-PORT=3000
-```
-
-## 🗃️ Configuração do Banco de Dados
-
-1. **Acesse o MySQL Workbench ou terminal**
-
-2. **Execute os seguintes comandos SQL:**
-```sql
--- Criar o banco de dados
-CREATE DATABASE IF NOT EXISTS formulario_db;
-
--- Usar o banco criado
-USE formulario_db;
-
--- Criar a tabela de usuários
-CREATE TABLE IF NOT EXISTS usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    senha VARCHAR(255) NOT NULL,
-    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-3. **Verificar se a tabela foi criada:**
-```sql
-DESCRIBE usuarios;
+3. **Configure o arquivo package.json (se necessário)**
+```json
+{
+  "scripts": {
+    "start": "node server.js"
+  }
+}
 ```
 
 ## 🚀 Como Usar
+
+### 💻 **Desenvolvimento Local**
 
 1. **Inicie o servidor**
 ```bash
@@ -144,9 +159,23 @@ node server.js
 http://localhost:3000
 ```
 
-3. **Navegue pelas funcionalidades:**
-   - Página de Login: `http://localhost:3000/index.html`
-   - Página de Cadastro: `http://localhost:3000/registrar.html`
+### 🌐 **Acesso Online (Railway)**
+
+A aplicação está hospedada no Railway e pode ser acessada através da URL:
+```
+https://sistema-login-cadastro-production.up.railway.app
+```
+
+### 📱 **Navegação**
+- **Página de Login**: `index.html`
+- **Página de Cadastro**: `registrar.html`
+
+### 📱 **Compatibilidade Mobile**
+A aplicação é totalmente responsiva e funciona perfeitamente em:
+- 📱 Smartphones (iOS/Android)
+- 📱 Tablets
+- 💻 Desktops
+- 🖥️ Monitores ultrawide
 
 ## 📁 Estrutura do Projeto
 
@@ -155,79 +184,35 @@ sistema-login-cadastro/
 ├── assets/
 │   ├── img/
 │   │   └── formulario.svg
-│   ├── styles.css
-│   └── script.js
-├── index.html              # Página de login
-├── registrar.html          # Página de cadastro
-├── server.js              # Servidor Express
-├── package.json           # Dependências do projeto
-├── .env                   # Variáveis de ambiente
-├── .gitignore            # Arquivos ignorados pelo Git
-└── README.md             # Documentação
+│   ├── styles.css           # Estilos CSS principais
+│   └── script.js            # Lógica JavaScript (localStorage)
+├── index.html               # Página de login
+├── registrar.html           # Página de cadastro
+├── server.js               # Servidor Express (arquivos estáticos)
+├── package.json            # Dependências e scripts
+├── .gitignore             # Arquivos ignorados pelo Git
+└── README.md              # Documentação
 ```
 
-## 🔌 API Endpoints
+## 🔧 Funcionalidades Detalhadas
 
-### POST /register
-Cadastra um novo usuário no sistema.
+### 📝 **Sistema de Cadastro**
+- Validação de campos obrigatórios
+- Verificação de confirmação de senha
+- Prevenção de emails duplicados
+- Armazenamento seguro no localStorage
 
-**Requisição:**
-```json
-{
-  "name": "João Silva",
-  "email": "joao@email.com",
-  "password": "minhasenha123",
-  "confirmPassword": "minhasenha123"
-}
-```
+### 🔑 **Sistema de Login**
+- Autenticação via email e senha
+- Verificação contra dados salvos
+- Manutenção de sessão ativa
+- Redirecionamento automático
 
-**Resposta de Sucesso (200):**
-```
-"Cadastro realizado com sucesso!"
-```
-
-**Resposta de Erro (400):**
-```
-"Este email já está cadastrado."
-```
-
-### POST /login
-Realiza o login do usuário.
-
-**Requisição:**
-```json
-{
-  "email": "joao@email.com",
-  "password": "minhasenha123"
-}
-```
-
-**Resposta de Sucesso (200):**
-```json
-{
-  "message": "Login realizado!",
-  "nome": "João Silva"
-}
-```
-
-**Resposta de Erro (401):**
-```
-"Email ou senha inválidos."
-```
-
-## 🤝 Contribuição
-
-Contribuições são sempre bem-vindas! Para contribuir:
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-## 📝 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+### 🎨 **Personalização**
+- Toggle tema escuro/claro
+- Preferências salvas automaticamente
+- Design responsivo
+- Animações suaves
 
 ## 👨‍💻 Autor
 Por: Gabriel Lins
